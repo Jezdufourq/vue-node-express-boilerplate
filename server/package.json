@@ -15,7 +15,8 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "nodemon": "^2.0.4",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

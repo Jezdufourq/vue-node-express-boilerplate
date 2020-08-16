@@ -3,10 +3,24 @@ var cors = require('cors');
 const app = express();
 const port = 8000;
 const docRouter = require('./docs');
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
 
+/* Logging methods */
+function logOriginalUrl(req, res, next) {
+  console.log('Request URL: ' + req.originalUrl);
+  next()
+}
 
-app.use(cors())
+function logMethod(req, res, next) {
+  console.log('Request Type: ' + req.method);
+  next()
+}
 
+const logging = [logOriginalUrl, logMethod]
+
+app.use(cors());
+app.user('/docs', logging,docRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -15,6 +29,9 @@ app.get('/', (req, res) => {
 app.get('/different-text', (req, res) => {
   res.send('This is a different text!')
 })
+
+app.user('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
