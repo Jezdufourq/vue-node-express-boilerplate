@@ -1,7 +1,9 @@
-const express = require('express')
-var cors = require('cors')
-const app = express()
-const port = 8000
+const express = require('express');
+var cors = require('cors');
+const app = express();
+const port = 8000;
+const docRouter = require('./docs');
+
 
 app.use(cors())
 
