@@ -1,6 +1,7 @@
 .DS_Store
 .thumbs.db
 node_modules
+twitter-api-keys.json
 
 # Quasar core related directories
 .quasar
