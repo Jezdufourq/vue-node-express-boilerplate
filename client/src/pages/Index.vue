@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import landingPage from '../components/landingPage'
+import landingComponent from '../components/landingComponent'
 
 export default {
   name: 'Index',
   components: {
-    landingPage
+    landingComponent
   }
 }
 </script>

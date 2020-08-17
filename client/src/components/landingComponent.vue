@@ -13,6 +13,6 @@
 
 <script>
 export default {
-  name: 'landingPage'
+  name: 'landingComponent'
 }
 </script>
