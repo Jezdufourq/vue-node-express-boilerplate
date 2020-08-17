@@ -1,16 +1,16 @@
 <template>
   <q-page class="flex flex-center row">
-    <initial-enter/>
+    <landing-page />
   </q-page>
 </template>
 
 <script>
-import InitialEnter from '../components/InitialEnter'
+import landingPage from '../components/landingPage'
 
 export default {
-  name: 'PageIndex',
+  name: 'Index',
   components: {
-    InitialEnter
+    landingPage
   }
 }
 </script>

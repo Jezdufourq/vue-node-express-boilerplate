@@ -4,13 +4,15 @@
       <div class="col row text-h1 text-bold">
         <div>Welcome.</div>
       </div>
-      <q-btn color="primary" label="PRESS TO ENTER" />
+      <div class="q-py-md">
+        <q-btn color="primary" label="PRESS TO ENTER" to="/home"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'intial-enter'
+  name: 'landingPage'
 }
 </script>
