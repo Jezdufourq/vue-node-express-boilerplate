@@ -1,11 +1,26 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="row flex flex-center q-gutter-md">
+    <div class="col-3">
+      <history-component />
+    </div>
+    <div class="col-3">
+      <analysis-component />
+    </div>
+    <div class="col-3">
+    </div>
   </q-page>
 </template>
 
 <script>
+import analysisComponent from '../components/analysisComponent'
+import historyComponent from '../components/historyComponent'
 
 export default {
-  name: 'Analysis'
+  name: 'Analysis',
+  components: {
+    analysisComponent,
+    historyComponent
+  }
+
 }
 </script>
