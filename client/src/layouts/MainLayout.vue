@@ -7,9 +7,6 @@
           <div class="text-black">Stock</div>
         </div>
       </div>
-      <div class="column items-center q-py-sm">
-        <div class="col-4"><q-btn color="primary" icon="home" label="Go Home" to="/"/></div>
-      </div>
     </q-header>
     <q-page-container>
       <router-view />
