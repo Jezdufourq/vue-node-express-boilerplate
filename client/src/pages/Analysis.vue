@@ -7,6 +7,7 @@
       <analysis-component />
     </div>
     <div class="col-3">
+      <chart-component />
     </div>
   </q-page>
 </template>
@@ -14,12 +15,14 @@
 <script>
 import analysisComponent from '../components/analysisComponent'
 import historyComponent from '../components/historyComponent'
+import chartComponent from '../components/chartComponent'
 
 export default {
   name: 'Analysis',
   components: {
     analysisComponent,
-    historyComponent
+    historyComponent,
+    chartComponent
   }
 
 }
