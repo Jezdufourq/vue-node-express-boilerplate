@@ -8,17 +8,11 @@
             class="q-gutter-md"
             style="max-width: 1000px"
           >
-            <q-form
-              @submit="onSubmit"
-              @reset="onReset"
-              class="q-gutter-md"
-              align="right"
-            >
             <div class="text-body1 text-left">
                 Enter a stock ticker below, press submit and SentiStock will take care of the rest!
             </div>
               <q-input
-                v-model="text"
+                v-model="stockTicker"
                 label="Enter a stock ticker"
               />
               <q-btn
@@ -30,11 +24,11 @@
               />
               <q-btn
                 label="Submit"
+                @click="submitStockTicker()"
                 type="submit"
                 color="primary"
                 to="analysis"
               />
-            </q-form>
           </div>
         </div>
       </q-card>
@@ -45,8 +39,14 @@
 <script>
 export default {
   name: 'homeComponent',
+  data () {
+    return {
+      stockTicker: ''
+    }
+  },
   methods: {
-    onSubmit () {
+    submitStockTicker () {
+      console.log(this.stockTicker)
     }
   }
 }

@@ -1,7 +1,10 @@
 .DS_Store
 .thumbs.db
 node_modules
+
+# passwords + keys
 twitter-api-keys.json
+/server/.env
 
 # Quasar core related directories
 .quasar
