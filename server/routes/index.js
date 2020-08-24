@@ -32,10 +32,7 @@ router.get("/search", async function(req, res, next) {
     params.q = ticker;
 
     // send the data to the twitter API
-    var twitterData = await getTwitterData();
-
-    // get the sentiment
-    var parallelResp = await getParallelData(twitterData);
+    var parallelResp = await getAnalysis();
 
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});
@@ -43,29 +40,58 @@ router.get("/search", async function(req, res, next) {
 });
 
 
-async function getParallelData(twitterData) {
-    var parallelDotsArr = JSON.stringify(twitterOutputArr);
-    console.log(parallelDotsArr);
-    pd.sentiment(parallelDotsArr, 'en')
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
-async function getTwitterData(err, data, res) {
+async function getAnalysis() {
     var outputArr = []
-    client.get('search/tweets', params)
-        .then((res) => {
-            res.statuses.forEach((element) => {
+    await client.get('search/tweets', params)
+        .then((response) => {
+            response.statuses.forEach((element) => {
                 outputArr.push(element.text);
             })
+            pd.sentiment(JSON.stringify(outputArr), 'en')
+                .then((response) => {
+                    console.log(response);
+                    return response;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         })
-        .catch((err) =>{
-            console.log(err);
+        .catch((error) =>{
+            console.log(error);
         });
-    return outputArr
 }
+
+// async function getParallelData(twitterData) {
+    //     var parallelDotsArr = JSON.stringify(twitterOutputArr);
+    //     console.log(parallelDotsArr);
+    //     pd.sentiment(parallelDotsArr, 'en')
+    //         .then((res) => {
+    //             console.log(res);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         })
+    // }
+
+// async function getTwitterData(err, data, res) {
+//     var outputArr = []
+//     client.get('search/tweets', params)
+//         .then((res) => {
+//             res.statuses.forEach((element) => {
+//                 outputArr.push(element.text);
+//             })
+//             pd.sentiment(JSON.stringify(parallelDotsArr), 'en')
+//             .then((res) => {
+//                 console.log(res);
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             })
+//         })
+//         .catch((err) =>{
+//             console.log(err);
+//         });
+//     return outputArr
+// }
 
 module.exports = router;
