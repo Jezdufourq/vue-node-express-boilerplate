@@ -16,7 +16,7 @@
                 label="Enter a stock ticker"
               />
               <q-btn
-                label="Back "
+                label="Back"
                 to="/"
                 color="primary"
                 flat
@@ -37,16 +37,27 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'homeComponent',
   data () {
     return {
-      stockTicker: ''
+      stockTicker: '',
+      stockTweets: []
     }
   },
   methods: {
     submitStockTicker () {
       console.log(this.stockTicker)
+      axios.get('http://127.0.0.1:3000/tweets?ticker=' + this.stockTicker)
+        .then((response) => {
+          this.stockTweets.push(response.data)
+          console.log(this.stockTweets)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

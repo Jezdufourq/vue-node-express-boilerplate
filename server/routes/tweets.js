@@ -23,33 +23,18 @@ var params = {
 var twitterOutputArr = []
 
 /* GET METHODS */
-router.get("/analysis", async function(req, res, next) {
-    // TODO: handle the request (i.e put the query into the params object)
-    // TODO: need to also sanitise the query (there should be validation on the frontend as well).
-
+router.get("/tweets", async function(req, res, next) {
     //defining the params
     var ticker = req.query.ticker;
     // setting the params to the ticker from the GET method
     params.q = ticker;
-
     // send the data to the twitter API
     var parallelResp = await getAnalysis();
-    var test = await testFn(parallelResp);
 
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(test), 'utf-8');
-});
-
-async function testFn(parallelResp) {
-    return await pd.sentiment(JSON.stringify(parallelResp), 'en')
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-}
+    res.end(JSON.stringify(parallelResp), 'utf-8');
+})
 
 async function getAnalysis() {
     return await client.get('search/tweets', params)

@@ -22,7 +22,7 @@ const swaggerDocument = require("./docs/swagger.json");
 
 //Routes
 const indexRouter = require("./routes/index");
-
+const tweetsRouter = require("./routes/tweets");
 //Init app
 const app = express();
 
@@ -48,6 +48,7 @@ logger.token("res", (req, res) => {
 
 //routes setup
 app.use("/", indexRouter);
+app.use("/", tweetsRouter)
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //404 error handling
