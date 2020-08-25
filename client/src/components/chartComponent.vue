@@ -5,7 +5,7 @@
       <VueTradingView
         class="q-pa-md"
         :options="{
-            symbol: 'NASDAQ:AAPL',
+            symbol: stockSymbol,
             width: '100%',
         }"
       />
@@ -15,11 +15,17 @@
 
 <script>
 import VueTradingView from 'vue-trading-view'
+import store from '../store'
 
 export default {
   name: 'chartComponent',
   components: {
     VueTradingView
+  },
+  computed: {
+    stockSymbol () {
+      return store.state.stockTicker
+    }
   }
 }
 </script>

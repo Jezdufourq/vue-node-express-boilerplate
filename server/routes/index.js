@@ -34,14 +34,14 @@ router.get("/analysis", async function(req, res, next) {
 
     // send the data to the twitter API
     var parallelResp = await getAnalysis();
-    var test = await testFn(parallelResp);
+    var sentimentResp = await getSentiment(parallelResp);
 
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify(test), 'utf-8');
+    res.end(sentimentResp, 'utf-8');
 });
 
-async function testFn(parallelResp) {
+async function getSentiment(parallelResp) {
     return await pd.sentiment(JSON.stringify(parallelResp), 'en')
         .then((response) => {
             return response;
