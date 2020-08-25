@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h3 q-pa-md text-left text-bold">History</div>
+    <div class="text-h3 q-pa-md text-left text-bold">Tweets</div>
     <div class="q-pa-md">
       <q-list>
         <q-item

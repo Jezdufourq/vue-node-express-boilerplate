@@ -15,10 +15,10 @@ const { response } = require("express");
 pd.apiKey = process.env.PARALLEL_DOTS_API_KEY;
 
 var params = {
-    q: '$APT',
+    q: null,
     lang: 'en',
     result_type: 'recent',
-    count: 10
+    count: 5
 }
 var twitterOutputArr = []
 

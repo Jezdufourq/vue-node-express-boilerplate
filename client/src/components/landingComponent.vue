@@ -5,7 +5,7 @@
         <div>Welcome.</div>
       </div>
       <div class="q-py-md">
-        <q-btn color="primary" label="PRESS TO ENTER" to="/home"/>
+        <q-btn color="primary" label="PRESS TO ENTER" to="/analysis"/>
       </div>
     </div>
   </div>
