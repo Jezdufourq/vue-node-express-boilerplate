@@ -21,7 +21,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./docs/swagger.json");
 
 //Routes
-const indexRouter = require("./routes/index");
+const analysisRouter = require("./routes/analysis");
 const tweetsRouter = require("./routes/tweets");
 //Init app
 const app = express();
@@ -47,7 +47,7 @@ logger.token("res", (req, res) => {
 })
 
 //routes setup
-app.use("/", indexRouter);
+app.use("/", analysisRouter);
 app.use("/", tweetsRouter)
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

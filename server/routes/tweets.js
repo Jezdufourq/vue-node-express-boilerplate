@@ -36,6 +36,7 @@ router.get("/tweets", async function(req, res, next) {
     res.end(JSON.stringify(parallelResp), 'utf-8');
 })
 
+/* HELPER FUNCTIONS */
 async function getAnalysis() {
     return await client.get('search/tweets', params)
         .then((response) => {
