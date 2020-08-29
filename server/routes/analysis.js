@@ -23,8 +23,8 @@ router.get("/analysis", async function(req, res, next) {
     params.q = req.query.ticker;
 
     // send the data to the twitter API
-    var twitterResp = await twitterUtil.getTweetsText(params);
-    var sentimentResp =  await parallelDotsUtil.getParallelDotsSentiment(twitterResp);
+    var twitterResp = await twitterUtil.getTweetsText(params).catch((error) => {console.log(error);});
+    var sentimentResp =  await parallelDotsUtil.getParallelDotsSentiment(twitterResp).catch((error) => {console.log(error);});
 
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});

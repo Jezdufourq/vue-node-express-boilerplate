@@ -1,18 +1,9 @@
+// middleware import
 var express = require("express");
 var router = express.Router();
 
-//Twitter service
-var Twitter = require("twitter");
-var client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    bearer_token: process.env.TWITTER_BEARER_TOKEN
-});
-
-//Parallel dots
-const pd = require('paralleldots');
-const { response } = require("express");
-pd.apiKey = process.env.PARALLEL_DOTS_API_KEY;
+// util import
+var twitterUtil = require('../util/twitterUtil');
 
 var params = {
     q: null,
@@ -20,7 +11,6 @@ var params = {
     result_type: 'recent',
     count: 5
 }
-var twitterOutputArr = []
 
 /* GET METHODS */
 router.get("/tweets", async function(req, res, next) {
@@ -29,22 +19,11 @@ router.get("/tweets", async function(req, res, next) {
     // setting the params to the ticker from the GET method
     params.q = ticker;
     // send the data to the twitter API
-    var parallelResp = await getAnalysis();
+    var parallelResp = await twitterUtil.getTweetsDetailed(params).catch((error) => {console.log(error);});
 
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(JSON.stringify(parallelResp), 'utf-8');
 })
-
-/* HELPER FUNCTIONS */
-async function getAnalysis() {
-    return await client.get('search/tweets', params)
-        .then((response) => {
-            return response.statuses;
-        })
-        .catch((error) =>{
-            console.log(error);
-        });
-}
 
 module.exports = router;
