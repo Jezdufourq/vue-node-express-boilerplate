@@ -8,8 +8,8 @@ const logger = require("morgan");
 require("dotenv").config();
 
 //port information
-const hostname = 'localhost';
-const port = 8081;
+const hostname = '127.0.0.1';
+const port = 3000;
 
 //Enable POST
 const helmet = require("helmet");

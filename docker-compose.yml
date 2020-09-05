@@ -3,17 +3,17 @@ version: "3"
 services:
   client:
     build: ./client
+    image: jezdufourq/assignment1_client:latest
     ports:
       - 8080:8080
     volumes:
       - ./client:/data
-    environment:
-      - API_URL=http://localhost:8081/
 
   server:
     build: ./server
+    image: jezdufourq/assignment1_server:latest
     ports:
-    - 8081:8081
+    - 3000:3000
     volumes:
     - ./server:/data
     depends_on:
