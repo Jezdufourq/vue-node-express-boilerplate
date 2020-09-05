@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h3 q-pa-md text-left text-bold">History</div>
+    <div class="text-h5 q-pa-md text-left text-bold">Your previous searches</div>
     <div class="q-pa-md">
       <q-list>
         <q-item
@@ -29,17 +29,7 @@ export default {
   name: 'tweetsComponent',
   data () {
     return {
-      items: [
-        {
-          ticker: 'A2M'
-        },
-        {
-          ticker: 'ALU'
-        },
-        {
-          ticker: 'BLU'
-        }
-      ]
+      items: []
     }
   }
 }

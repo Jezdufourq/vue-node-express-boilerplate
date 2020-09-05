@@ -12,13 +12,10 @@
     </div>
     <div class="row flex flex-center">
       <div class="col-4 q-px-md">
-        <tweets-component />
-        <history-component />
-      </div>
-      <div class="col-4 q-px-md">
         <analysis-component />
+        <tweets-component />
       </div>
-      <div class="col-4 q-px-md">
+      <div class="col-6 q-px-md">
         <chart-component />
       </div>
     </div>
@@ -29,15 +26,13 @@
 import analysisComponent from '../components/analysisComponent'
 import tweetsComponent from '../components/tweetsComponent'
 import chartComponent from '../components/chartComponent'
-import historyComponent from '../components/historyComponent'
 
 export default {
   name: 'Analysis',
   components: {
     analysisComponent,
     tweetsComponent,
-    chartComponent,
-    historyComponent
+    chartComponent
   }
 
 }

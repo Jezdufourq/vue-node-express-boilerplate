@@ -5,7 +5,7 @@
       <VueTradingView
         class="q-pa-md"
         :options="{
-            symbol: stockSymbol,
+            symbol: 'AAPL',
             width: '100%',
         }"
       />

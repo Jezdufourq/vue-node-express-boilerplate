@@ -39,32 +39,11 @@
           </div>
         </div>
       </div>
-      <div class="q-pa-md row items-center">
-        <div class="col">
-          <q-input
-            outlined
-            bottom-slots
-            v-model="stockTicker"
-            label="Enter a Stock Ticker"
-          >
-            <template v-slot:append>
-              <q-icon
-                name="search"
-                color="primary"
-                @click="searchTicker()"
-                class="cursor-pointer"
-              />
-            </template>
-          </q-input>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import store from '../store'
 import loading from './loading'
 
 export default {
@@ -74,33 +53,11 @@ export default {
   },
   data () {
     return {
-      stockTicker: null,
+      stockTicker: '',
       negative: null,
       positive: null,
       neutral: null,
       loadingState: false
-    }
-  },
-  methods: {
-    searchTicker () {
-      this.loadingState = true
-      console.log(this.stockTicker.toUpperCase())
-      axios.get('http://localhost:3000/analysis?ticker=' + this.stockTicker.toUpperCase())
-        .then((response) => {
-          this.negative = Math.round(response.data.sentiment.negative * 100)
-          this.positive = Math.round(response.data.sentiment.positive * 100)
-          this.neutral = Math.round(response.data.sentiment.neutral * 100)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-        .finally(() => {
-          this.loadingState = false
-        })
-
-      // updating the vuex store
-      store.commit('updateStockTicker', this.stockTicker.toUpperCase())
-      store.commit('updateSearchHistory', this.stockTicker.toUpperCase())
     }
   }
 }
