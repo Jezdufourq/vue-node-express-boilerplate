@@ -74,7 +74,7 @@ export default {
   methods: {
     searchTicker () {
       console.log(this.stockTicker.toUpperCase())
-      axios.get('http://127.0.0.1:3000/analysis?ticker=' + this.stockTicker.toUpperCase())
+      axios.get('api/analysis?ticker=' + this.stockTicker.toUpperCase())
         .then((response) => {
           this.negative = Math.round(response.data.sentiment.negative * 100)
           this.positive = Math.round(response.data.sentiment.positive * 100)
