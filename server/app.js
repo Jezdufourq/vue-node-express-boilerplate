@@ -8,7 +8,7 @@ const logger = require("morgan");
 require("dotenv").config();
 
 //port information
-const hostname = 'localhost';
+const hostname = '0.0.0.0';
 const port = 3000;
 
 //Enable POST
