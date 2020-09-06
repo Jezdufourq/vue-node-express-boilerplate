@@ -107,7 +107,7 @@ export default {
       // 1st api call - analysis GET /api/analysis
       promiseArr.push(axios.get('http://localhost:3000/analysis?ticker=' + this.stockTicker.toUpperCase()))
       // 2nd api call - tweets GET /api/tweets
-      promiseArr.push(axios.get('http://localhost:3000/tweets?ticker=' + this.stockTicker.toUpperCase()))
+      promiseArr.push(axios.get('http://localhost:3000/tweets-detailed?ticker=' + this.stockTicker.toUpperCase()))
 
       Promise.all(promiseArr)
         .then((response) => {

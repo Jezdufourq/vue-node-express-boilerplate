@@ -1,23 +1,22 @@
 <template>
   <div>
     <div class="text-h3 q-pa-md text-left text-bold">Tweets</div>
-    <div class="q-pa-md">
+     <div class="list scroll q-pa-md" style="height:200px">
       <q-list>
         <q-item
-          v-for="item in items"
-          :key="item.ticker"
+          v-for="tweet in tweets"
+          :key="tweet.id"
           clickable
           v-ripple
-        >
-          <q-item-section class="text-body text-bold">
-            {{ item.ticker }}
+          >
+          <q-item-section>
+            <q-item-label>{{ tweet.user.screen_name }}</q-item-label>
+            <q-item-label caption lines="2">{{ tweet.text }}</q-item-label>
           </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="search"
-              color="primary"
-            />
-          </q-item-section>
+
+          <!-- <q-item-section side top>
+            <q-item-label caption>{{ tweet.created_at }}</q-item-label>
+          </q-item-section> -->
         </q-item>
       </q-list>
     </div>
@@ -29,18 +28,15 @@ export default {
   name: 'tweetsComponent',
   data () {
     return {
-      items: [
-        {
-          ticker: 'A2M'
-        },
-        {
-          ticker: 'ALU'
-        },
-        {
-          ticker: 'BLU'
-        }
-      ]
     }
+  },
+  computed: {
+    tweets () {
+      return this.$store.state.tweets
+    }
+  },
+  mounted () {
+    console.log(this.tweets)
   }
 }
 </script>
