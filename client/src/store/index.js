@@ -16,7 +16,9 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       stockTicker: '',
-      searchHistory: []
+      searchHistory: [],
+      tweets: [],
+      analysisResult: ''
     },
     mutations: {
       updateStockTicker (state, payload) {
@@ -27,6 +29,12 @@ export default function (/* { ssrContext } */) {
       },
       resetSearchHistory (state) {
         state.searchHistory = []
+      },
+      updateTweets (state, payload) {
+        state.tweets = payload
+      },
+      updateAnalysisResult (state, payload) {
+        state.analysisResult = payload
       }
     },
     getters: {
@@ -35,6 +43,12 @@ export default function (/* { ssrContext } */) {
       },
       getSearchHistory: state => {
         return state.searchHistory
+      },
+      getTweets: state => {
+        return state.tweets
+      },
+      getAnalysisResult: state => {
+        return state.analysisResult
       }
     },
 
