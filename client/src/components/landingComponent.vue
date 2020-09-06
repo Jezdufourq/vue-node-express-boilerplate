@@ -39,11 +39,21 @@ export default {
   },
   data () {
     return {
-      stockTicker: ''
+    }
+  },
+  computed: {
+    stockTicker: {
+      get () {
+        return this.$store.state.stockTicker
+      },
+      set (payload) {
+        this.$store.commit('updateStockTicker', payload)
+      }
     }
   },
   methods: {
     searchTicker () {
+      console.log(this.stockTicker)
       // this.loadingState = true
       // console.log(this.stockTicker.toUpperCase())
       // axios.get('http://localhost:3000/analysis?ticker=' + this.stockTicker.toUpperCase())
