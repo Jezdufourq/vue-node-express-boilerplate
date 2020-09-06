@@ -3,8 +3,8 @@
     <div class="text-h5 q-pa-md text-left text-bold">Your previous searches
       <q-btn color="primary" text-color="white" label="Reset" @click="resetTickers"/>
     </div>
-    <div v-if="items.length == 0" class="q-pa-md" style="height:200px;width:300px">
-      You need to search some items. Your searched items will appear in this section after you have searched for some items.
+    <div v-if="items.length == 0" class="q-pa-md" style="height:200px">
+      You need to search some items.
     </div>
     <div class="list scroll q-pa-md" style="height:200px">
       <q-list>
