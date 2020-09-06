@@ -24,6 +24,9 @@ export default function (/* { ssrContext } */) {
       },
       updateSearchHistory (state, payload) {
         state.searchHistory.push(payload)
+      },
+      resetSearchHistory (state) {
+        state.searchHistory = []
       }
     },
     getters: {

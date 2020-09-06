@@ -1,21 +1,27 @@
 <template>
-  <div>
-    <div class="text-h5 q-pa-md text-left text-bold">Your previous searches</div>
-    <div class="q-pa-md">
+  <div style="max-height: 400px">
+    <div class="text-h5 q-pa-md text-left text-bold">Your previous searches
+      <q-btn color="primary" text-color="white" label="Reset" @click="resetTickers"/>
+    </div>
+    <div v-if="items.length == 0" class="q-pa-md" style="height:200px;width:300px">
+      You need to search some items. Your searched items will appear in this section after you have searched for some items.
+    </div>
+    <div class="list scroll q-pa-md" style="height:200px">
       <q-list>
         <q-item
           v-for="item in items"
-          :key="item.ticker"
+          :key="item"
           clickable
-          v-ripple
         >
           <q-item-section class="text-body text-bold">
-            {{ item.ticker }}
+            {{ item }}
           </q-item-section>
           <q-item-section side>
             <q-icon
               name="search"
               color="primary"
+              @click="updateTicker(item)"
+              class="cursor-pointer"
             />
           </q-item-section>
         </q-item>
@@ -29,7 +35,24 @@ export default {
   name: 'tweetsComponent',
   data () {
     return {
-      items: []
+    }
+  },
+  computed: {
+    items: {
+      get () {
+        return this.$store.state.searchHistory
+      },
+      set (payload) {
+        this.$store.commit('updateSearchHistory', payload)
+      }
+    }
+  },
+  methods: {
+    updateTicker (ticker) {
+      this.$store.commit('updateStockTicker', ticker)
+    },
+    resetTickers () {
+      this.$store.commit('resetSearchHistory')
     }
   }
 }

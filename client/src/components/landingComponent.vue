@@ -53,7 +53,8 @@ export default {
   },
   methods: {
     searchTicker () {
-      console.log(this.stockTicker)
+      this.$store.commit('updateSearchHistory', this.$store.state.stockTicker)
+      console.log(this.$store.state.searchHistory)
       // this.loadingState = true
       // console.log(this.stockTicker.toUpperCase())
       // axios.get('http://localhost:3000/analysis?ticker=' + this.stockTicker.toUpperCase())
