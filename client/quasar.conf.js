@@ -54,6 +54,11 @@
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+        }
+      }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

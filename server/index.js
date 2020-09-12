@@ -1,6 +1,6 @@
 const path = require('path')
 const express = require('express')
-const port = 5000
+const port = 3000
 
 require("dotenv").config();
 
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 logger.token("req", (req, res) => {
     JSON.stringify(req.headers);
   })
-  
+
   logger.token("res", (req, res) => {
     const headers = {};
     res.getHeaderNames().map(h => (headers[h] = res.getHeader(h)));

@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "nodemon app.js --ignore ../client/",
-    "start": "node app.js --ignore ../client/"
+    "dev": "nodemon app.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
