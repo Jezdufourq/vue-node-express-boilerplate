@@ -15,4 +15,4 @@ EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint/entrypoint.sh"]
 
-CMD ["quasar", "dev"]
+CMD ["npm", "start"]
