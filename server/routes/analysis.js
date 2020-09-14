@@ -1,10 +1,13 @@
 // middleware import
 var express = require("express");
+const asyncHandler = require('express-async-handler');
 var router = express.Router();
 
 // util import
 var parallelDotsUtil = require('../util/parallelDotsUtil');
 var twitterUtil = require('../util/twitterUtil');
+var tradingViewUtil = require('../util/tradingviewUtil');
+var sanitizationUtil = require('../util/sanitizationUtil');
 
 // default query params
 var params = {
@@ -15,7 +18,7 @@ var params = {
 }
 
 /* GET METHOD */
-router.get("/analysis", async function(req, res, next) {
+router.get("/analysis", asyncHandler(async function(req, res, next) {
     // TODO: handle the request (i.e put the query into the params object)
     // TODO: need to also sanitise the query (there should be validation on the frontend as well).
     // query sanitization
@@ -46,6 +49,14 @@ router.get("/analysis", async function(req, res, next) {
     params.result_type = req.query.type;
     params.lang = req.query.lang;
 
+    // sanitize/lookup stock ticker
+    var tradingViewResp = await tradingViewUtil.searchStockTickers(req.query.ticker).catch((error) => {console.log(error);});
+    if (tradingViewResp.length == 0) {
+        const err = new Error('You have entered an invalid stock ticker');
+        err.status = 400;
+        next(err);
+    }
+
     // send the data to the twitter API
     var twitterResp = await twitterUtil.getTweetsText(params).catch((error) => {console.log(error);});
     var sentimentResp =  await parallelDotsUtil.getParallelDotsSentiment(twitterResp).catch((error) => {console.log(error);});
@@ -53,6 +64,6 @@ router.get("/analysis", async function(req, res, next) {
     // sending response back
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.end(sentimentResp, 'utf-8');
-});
+}));
 
 module.exports = router;

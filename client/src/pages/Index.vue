@@ -1,6 +1,8 @@
 <template>
   <q-page class="flex flex-center row">
-    <landing-component />
+    <div>
+      <landing-component />
+    </div>
   </q-page>
 </template>
 

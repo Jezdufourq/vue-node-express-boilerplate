@@ -9,48 +9,47 @@
     <div
       v-if="!loadingState"
       class="column items-center"
+      style="max-width: 500px"
     >
       <div class="col row text-h1 text-bold">
         <div>Welcome.</div>
       </div>
       <div class="q-pa-md row items-center">
-        <div class="col">
-          <q-form
-            @submit="searchTicker()"
-            @reset="resetTicker()"
-          >
+        <div class="col" style="width:500px">
             <div class="row">
-              <div class="col-auto items-center">
-                <q-input
-                  outlined
-                  v-model="stockTicker"
-                  label="Enter a Stock Ticker"
-                  :rules="[val => !!val || 'Field is required']"
-                />
-              </div>
-              <div class="col-auto q-pa-sm">
-                <q-btn
-                  round
-                  class="q-ma-sm"
-                  icon="search"
-                  type="submit"
-                  color="primary"
-                />
-                <q-btn
-                  round
-                  class="q-ma-sm"
-                  icon="clear"
-                  type="reset"
-                  color="primary"
-                />
-              </div>
+              <q-input
+                outlined
+                debounce="500"
+                class="full-width"
+                v-model="stockTicker"
+                label="Enter a Stock Ticker"
+                @input="validateTicker"
+                clearable
+              >
+              <template v-slot:append>
+                <q-icon name="search" type="submit"/>
+              </template>
+              </q-input>
             </div>
-          </q-form>
+            <div class="q-py-md">
+              <q-table
+                color="primary"
+                class="shadow-2"
+                style="width:500px;height:300px"
+                :data="stockTickerSearch"
+                :columns="stockTickerColumns"
+                row-key
+                virtual-scroll
+                :virtual-scroll-item-size="48"
+                @request="validateTicker"
+                @row-click="rowClickTest"
+              />
+            </div>
         </div>
       </div>
-      <div>
-        <history-component />
-      </div>
+    </div>
+    <div>
+      <history-component />
     </div>
   </div>
 </template>
@@ -67,7 +66,34 @@ export default {
   },
   data () {
     return {
-      loadingState: false
+      loadingState: false,
+      stockTickerSearch: [],
+      stockTickerColumns: [
+        {
+          name: 'symbol',
+          required: true,
+          label: 'Ticker',
+          field: (row) => row.symbol,
+          align: 'left',
+          sortable: false
+        },
+        {
+          name: 'description',
+          required: true,
+          label: 'Description',
+          field: (row) => row.description,
+          align: 'left',
+          sortable: false
+        },
+        {
+          name: 'exchange',
+          required: true,
+          label: 'Exchange',
+          field: (row) => row.exchange,
+          align: 'left',
+          sortable: false
+        }
+      ]
     }
   },
   computed: {
@@ -136,7 +162,31 @@ export default {
     },
     resetTicker () {
       this.stockTicker = null
+    },
+    validateTicker (ticker) {
+      axios.get('api/search-ticker?ticker=' + ticker)
+        .then((response) => {
+          console.log(response.data)
+          this.stockTickerSearch = response.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    rowClickTest (evt, row) {
+      this.stockTicker = row.symbol
     }
+  },
+  mounted () {
+    // pre-populating table with common tickers
+    axios.get('api/search-top-tickers')
+      .then((response) => {
+        console.log(response.data)
+        this.stockTickerSearch = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 </script>

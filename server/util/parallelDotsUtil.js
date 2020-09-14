@@ -5,7 +5,6 @@ const pd = require('paralleldots');
 pd.apiKey = process.env.PARALLEL_DOTS_API_KEY;
 
 
-
 /* UTIL METHOD SECTION */
 /* getParallelDotsSentiment()
 Description - gets the sentiment of a textArr using the ParallelDots API. Returns a promise.

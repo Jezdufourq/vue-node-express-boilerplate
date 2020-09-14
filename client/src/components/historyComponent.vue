@@ -1,7 +1,10 @@
 <template>
-  <div style="max-height: 400px">
-    <div class="text-h5 q-pa-md text-left text-bold">Your previous searches
-      <q-btn color="primary" text-color="white" label="Reset" @click="resetTickers"/>
+  <div style="max-height: 300px;width:500px">
+    <div class="row items-center">
+      <div class="text-h5 q-pa-md text-left text-bold">Your previous searches</div>
+      <div class="col-auto">
+        <q-btn color="primary" text-color="white" label="Reset" @click="resetTickers"/>
+      </div>
     </div>
     <div v-if="items.length == 0" class="q-pa-md" style="height:200px">
       You need to search some items.
