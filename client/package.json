@@ -11,13 +11,13 @@
     "dev": "quasar dev",
     "prod": "quasar build",
     "serve": "quasar serve"
-
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "quasar": "^1.0.0",
+    "swagger-jsdoc": "^4.0.0",
     "vue-trading-view": "^1.0.1",
     "vuex": "^3.5.1"
   },

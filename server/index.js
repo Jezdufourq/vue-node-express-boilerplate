@@ -12,7 +12,7 @@ const logger = require("morgan");
 
 //Enable Swagger Docs
 const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./docs/swagger.json");
+const swaggerJsDoc = require("swagger-jsdoc");
 
 //Routes
 const analysisRouter = require("./routes/analysis");
@@ -21,7 +21,18 @@ const tickerRouter = require("./routes/ticker");
 //Init app
 const app = express();
 
-
+// setting up swaggerJsDoc
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "SentiStock APIs",
+      description: "SentiStock API Information",
+      servers: ["http://localhost:3000"]
+    }
+  },
+  apis: ["./routes/*.js"]
+};
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
 // Serve out any static assets correctly
 app.use(express.static('../client/dist/spa'))
@@ -50,7 +61,7 @@ logger.token("req", (req, res) => {
 app.use("/api", analysisRouter);
 app.use("/api", tweetsRouter)
 app.use("/api", tickerRouter);
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Any routes that don't match on our static assets or api should be sent to the React Application
 // This allows for the use of things like React Router

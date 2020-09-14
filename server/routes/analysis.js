@@ -17,7 +17,25 @@ var params = {
     count: 5
 }
 
-/* GET METHOD */
+/**
+ *
+ * @swagger
+ * /api/analysis:
+ *  get:
+ *   description: Retrieves the analysis using tweets which are fed into the ParallelDots sentiment API.
+ *   produces:
+ *    - application/json
+ *   parameters:
+ *    - name: ticker
+ *      in: query
+ *      description: Stock ticker to retrieve the analysis on
+ *      type: string
+ *      required: true
+ *   response:
+ *    '200':
+ *     description: 'A successful response.'
+ *
+*/
 router.get("/analysis", asyncHandler(async function(req, res, next) {
     // query sanitization
     if(!req.query) {

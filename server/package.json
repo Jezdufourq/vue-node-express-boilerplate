@@ -27,6 +27,7 @@
     "nodemon": "^2.0.4",
     "paralleldots": "^3.2.5",
     "quasar": "^1.0.0",
+    "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "twitter": "^1.7.1"
   },
