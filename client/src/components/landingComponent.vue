@@ -15,10 +15,7 @@
         <div>Welcome.</div>
       </div>
       <div class="col row text-subtitle">
-        <div>Search for a stock ticker below</div>
-      </div>
-      <div class="col row text-subtitle text-bold">
-        <div>You have selected {{ stockTicker }}</div>
+        <div>Search for a stock ticker below, and then click on the ticker you want to search.</div>
       </div>
       <div class="q-pa-md row items-center">
         <div
@@ -30,23 +27,13 @@
                 <q-input
                   outlined
                   debounce="500"
-                  class="col-10"
+                  class="full-width"
                   v-model="stockTicker"
                   label="Search for Stock Ticker"
                   @input="validateTicker"
                   clearable
                 >
-                  <!-- <template v-slot:append>
-                    <q-icon
-                      name="search"
-                      type="submit"
-                      @click="searchTicker"
-                    />
-                  </template> -->
                 </q-input>
-                <div class="q-pa-md">
-                  <q-btn round color="primary" icon="search" @click="searchTicker" />
-                </div>
             </div>
             <div class="q-py-md">
               <q-table
@@ -203,6 +190,8 @@ export default {
     rowClickTest (evt, row) {
       this.stockTicker = row.symbol
       this.exchangeSymbol = row.exchange
+      // the user can search the ticker on the row click
+      this.searchTicker()
     }
   },
   mounted () {

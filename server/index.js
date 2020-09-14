@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const path = require('path')
 const express = require('express')
 const port = 3000
@@ -16,6 +17,7 @@ const swaggerDocument = require("./docs/swagger.json");
 //Routes
 const analysisRouter = require("./routes/analysis");
 const tweetsRouter = require("./routes/tweets");
+const tickerRouter = require("./routes/ticker");
 //Init app
 const app = express();
 
@@ -47,6 +49,7 @@ logger.token("req", (req, res) => {
 //routes setup
 app.use("/api", analysisRouter);
 app.use("/api", tweetsRouter)
+app.use("/api", tickerRouter);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Any routes that don't match on our static assets or api should be sent to the React Application
@@ -55,10 +58,23 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/spa', 'index.html'));
 })
 
-//404 error handling
-app.use(function(req, res, next) {
-    next(createError(404));
+// middlware to handle errors
+// All Status codes
+app.use((error, req, res, next) => {
+  // logging to console
+  console.log('Error status: ', error.status)
+  console.log('Message: ', error.message)
+  // sets HTTP status code
+  // default to 500 for fallback
+  res.status(error.status || 500)
+
+  // Sends response
+  res.json({
+    status: error.status,
+    message: error.message,
+    stack: error.stack
   })
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

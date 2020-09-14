@@ -14,6 +14,12 @@ var params = {
     count: 5
 }
 
+router.get("/search-top-tickers", asyncHandler(async function(req, res, next) {
+    var tradingViewResp = await tradingViewUtil.searchTopStockTickers().catch((error) => {console.log(error)});
+    res.send(tradingViewResp);
+}));
+
+
 /* GET METHODS */
 router.get("/tweets", asyncHandler(async function(req, res, next) {
     // query sanitization

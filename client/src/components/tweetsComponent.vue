@@ -10,6 +10,8 @@
           :key="tweet.id"
           clickable
           v-ripple
+          @click="searchTweet(tweet.entities.urls[0].url)"
+          class="link"
           >
           <q-item-section>
             <q-item-label>{{ tweet.user.screen_name }}</q-item-label>
@@ -27,7 +29,8 @@
 </template>
 
 <script>
-import { date } from 'quasar'
+import { openURL, date } from 'quasar'
+
 export default {
   name: 'tweetsComponent',
   data () {
@@ -69,6 +72,10 @@ export default {
 
       const differenceDates = date.getDateDiff(originalTwitterDate, currentDate, 'minutes')
       return date.formatDate(differenceDates, 'm') + ' mins '
+    },
+    searchTweet (link) {
+      console.log(link)
+      openURL(link)
     }
   },
   mounted () {
