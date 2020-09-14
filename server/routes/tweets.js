@@ -14,13 +14,40 @@ var params = {
     count: 5
 }
 
-router.get("/search-top-tickers", asyncHandler(async function(req, res, next) {
-    var tradingViewResp = await tradingViewUtil.searchTopStockTickers().catch((error) => {console.log(error)});
-    res.send(tradingViewResp);
-}));
-
-
-/* GET METHODS */
+/**
+ *
+ * @swagger
+ * /api/tweets:
+ *  get:
+ *   description: Retrieves a short version of the tweets relating to the current stock ticker using the Twitter API
+ *   produces:
+ *    - application/json
+ *   parameters:
+ *    - name: ticker
+ *      in: query
+ *      description: Stock ticker to retrieve the analysis on
+ *      type: string
+ *      required: true
+ *    - name: count
+ *      in: query
+ *      description: Count for the number of tweets to retrieve
+ *      type: integer
+ *      required: false
+ *    - name: type
+ *      in: query
+ *      description: Type of tweet to retrieve (recent or popular)
+ *      type: string
+ *      required: false
+ *    - name: lang
+ *      in: query
+ *      description: Type of language to retrieve the tweet in
+ *      type: string
+ *      required: false
+ *   response:
+ *    '200':
+ *     description: 'A successful response.'
+ *
+*/
 router.get("/tweets", asyncHandler(async function(req, res, next) {
     // query sanitization
     if(!req.query) {
@@ -65,6 +92,43 @@ router.get("/tweets", asyncHandler(async function(req, res, next) {
     res.end(JSON.stringify(twitterResp), 'utf-8');
 }));
 
+
+/**
+ *
+ * @swagger
+ * /api/tweets-detailed:
+ *  get:
+ *   description: Retrieves a detailed version of the tweets relating to the current stock ticker using the Twitter API
+ *   produces:
+ *    - application/json
+ *   parameters:
+ *    - name: ticker
+ *      in: query
+ *      description: Stock ticker to retrieve the analysis on
+ *      type: string
+ *      required: true
+ *    - name: count
+ *      in: query
+ *      description: Count for the number of tweets to retrieve
+ *      type: integer
+ *      required: false
+ *    - name: type
+ *      in: query
+ *      description: Type of tweet to retrieve (recent or popular)
+ *      type: string
+ *      required: false
+ *    - name: lang
+ *      in: query
+ *      description: Type of language to retrieve the tweet in
+ *      type: string
+ *      required: false
+ *   response:
+ *    '200':
+ *     description: 'A successful response.'
+ *    '400':
+ *     description: 'Required query params mission. You must enter a stock ticker'
+ *
+*/
 router.get("/tweets-detailed", asyncHandler(async function(req, res, next) {
     // query sanitization
     if(!req.query) {

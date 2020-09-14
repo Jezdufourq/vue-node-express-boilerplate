@@ -178,7 +178,7 @@ export default {
       this.stockTicker = null
     },
     validateTicker (ticker) {
-      axios.get('api/search-ticker?ticker=' + ticker)
+      axios.get('api/ticker/search-ticker?ticker=' + ticker)
         .then((response) => {
           console.log(response.data)
           this.stockTickerSearch = response.data
@@ -196,7 +196,7 @@ export default {
   },
   mounted () {
     // pre-populating table with common tickers
-    axios.get('api/search-top-tickers')
+    axios.get('api/ticker/search-top-tickers')
       .then((response) => {
         console.log(response.data)
         this.stockTickerSearch = response.data

@@ -31,9 +31,26 @@ var params = {
  *      description: Stock ticker to retrieve the analysis on
  *      type: string
  *      required: true
+ *    - name: count
+ *      in: query
+ *      description: Count for the number of tweets to retrieve
+ *      type: integer
+ *      required: false
+ *    - name: type
+ *      in: query
+ *      description: Type of tweet to retrieve (recent or popular)
+ *      type: string
+ *      required: false
+ *    - name: lang
+ *      in: query
+ *      description: Type of language to retrieve the tweet in
+ *      type: string
+ *      required: false
  *   response:
  *    '200':
  *     description: 'A successful response.'
+ *    '400':
+ *     description: 'Required query params mission. You must enter a stock ticker'
  *
 */
 router.get("/analysis", asyncHandler(async function(req, res, next) {
