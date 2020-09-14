@@ -3,22 +3,6 @@
     <div class="row items-center">
       <div class="col-auto text-h3 q-pa-md text-left text-bold">Tweets</div>
     </div>
-    <q-form
-      @submit="searchTweets">
-      <div class="row items-center">
-        <q-input
-          filled
-          v-model="count"
-          name="count"
-          label="# of tweets"
-          class="col-3"
-        />
-        <q-select filled v-model="tweetType" :options="tweetOptions" label="Tweets option" class="col-4"/>
-        <div class="col-auto q-pa-sm">
-          <q-btn color="primary" label="Search" type="submit" text-color="white" @click="refreshTweets"/>
-        </div>
-      </div>
-    </q-form>
     <div class="list scroll q-pa-md" style="height:200px">
       <q-list>
         <q-item
@@ -43,7 +27,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { date } from 'quasar'
 export default {
   name: 'tweetsComponent',
@@ -80,16 +63,6 @@ export default {
     }
   },
   methods: {
-    refreshTweets () {
-      axios.get('/api/tweets-detailed?ticker=' + this.stockTicker)
-        .then((response) => {
-          console.log(response.data)
-          this.tweets = response.data
-        })
-    },
-    searchTweets () {
-      console.log('search tweets')
-    },
     computedShortTwitterDate (payload) {
       const originalTwitterDate = payload
       const currentDate = Date.now()

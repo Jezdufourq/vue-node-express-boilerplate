@@ -14,28 +14,44 @@
       <div class="col row text-h1 text-bold">
         <div>Welcome.</div>
       </div>
+      <div class="col row text-subtitle">
+        <div>Search for a stock ticker below</div>
+      </div>
+      <div class="col row text-subtitle text-bold">
+        <div>You have selected {{ stockTicker }}</div>
+      </div>
       <div class="q-pa-md row items-center">
-        <div class="col" style="width:500px">
-            <div class="row">
-              <q-input
-                outlined
-                debounce="500"
-                class="full-width"
-                v-model="stockTicker"
-                label="Enter a Stock Ticker"
-                @input="validateTicker"
-                clearable
-              >
-              <template v-slot:append>
-                <q-icon name="search" type="submit"/>
-              </template>
-              </q-input>
+        <div
+          class="col"
+          style="width:500px"
+        >
+            <div class="q-pa-md">
+              <div class="row items-center">
+                <q-input
+                  outlined
+                  debounce="500"
+                  class="col-10"
+                  v-model="stockTicker"
+                  label="Search for Stock Ticker"
+                  @input="validateTicker"
+                  clearable
+                >
+                  <!-- <template v-slot:append>
+                    <q-icon
+                      name="search"
+                      type="submit"
+                      @click="searchTicker"
+                    />
+                  </template> -->
+                </q-input>
+                <div class="q-pa-md">
+                  <q-btn round color="primary" icon="search" @click="searchTicker" />
+                </div>
             </div>
             <div class="q-py-md">
               <q-table
                 color="primary"
-                class="shadow-2"
-                style="width:500px;height:300px"
+                style="height:300px"
                 :data="stockTickerSearch"
                 :columns="stockTickerColumns"
                 row-key
@@ -45,11 +61,12 @@
                 @row-click="rowClickTest"
               />
             </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <history-component />
+      <div>
+        <history-component />
+      </div>
     </div>
   </div>
 </template>
@@ -58,12 +75,14 @@
 import historyComponent from './historyComponent'
 import loading from './loading'
 import axios from 'axios'
+import notifyError from '../mixins/notifyError'
 export default {
   name: 'landingComponent',
   components: {
     historyComponent,
     loading
   },
+  mixins: [notifyError],
   data () {
     return {
       loadingState: false,
@@ -120,6 +139,14 @@ export default {
       set (payload) {
         this.$store.commit('updateTweets', payload)
       }
+    },
+    exchangeSymbol: {
+      get () {
+        return this.$store.state.exchangeSymbol
+      },
+      set (payload) {
+        this.$store.commit('updateExchangeSymbol', payload)
+      }
     }
   },
   methods: {
@@ -153,7 +180,7 @@ export default {
           console.log(this.tweets)
         })
         .catch((error) => {
-          console.log(error)
+          this.notifyError(error)
         })
         .finally(() => {
           this.loadingState = false
@@ -175,6 +202,7 @@ export default {
     },
     rowClickTest (evt, row) {
       this.stockTicker = row.symbol
+      this.exchangeSymbol = row.exchange
     }
   },
   mounted () {

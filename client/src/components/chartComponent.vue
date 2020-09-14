@@ -5,7 +5,7 @@
       <VueTradingView
         class="q-pa-md"
         :options="{
-            symbol: stockSymbol,
+            symbol: exchangeSymbol + ':' + stockSymbol,
             width: '100%',
         }"
       />
@@ -24,6 +24,9 @@ export default {
   computed: {
     stockSymbol () {
       return this.$store.state.stockTicker
+    },
+    exchangeSymbol () {
+      return this.$store.state.exchangeSymbol
     }
   }
 }

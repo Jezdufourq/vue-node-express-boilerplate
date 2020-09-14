@@ -5,7 +5,7 @@ var router = express.Router();
 
 // util import
 var twitterUtil = require('../util/twitterUtil');
-var sanitiseUtil = require('../util/sanitizationUtil');
+var tradingViewUtil = require('../util/tradingviewUtil');
 
 var params = {
     q: null,

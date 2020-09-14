@@ -18,7 +18,8 @@ export default function (/* { ssrContext } */) {
       stockTicker: '',
       searchHistory: [],
       tweets: [],
-      analysisResult: ''
+      analysisResult: '',
+      exchangeSymbol: ''
     },
     mutations: {
       updateStockTicker (state, payload) {
@@ -35,6 +36,9 @@ export default function (/* { ssrContext } */) {
       },
       updateAnalysisResult (state, payload) {
         state.analysisResult = payload
+      },
+      updateExchangeSymbol (state, payload) {
+        state.exchangeSymbol = payload
       }
     },
     getters: {
@@ -49,6 +53,9 @@ export default function (/* { ssrContext } */) {
       },
       getAnalysisResult: state => {
         return state.analysisResult
+      },
+      getExchangeSymbol: state => {
+        return state.exchangeSymbol
       }
     },
 

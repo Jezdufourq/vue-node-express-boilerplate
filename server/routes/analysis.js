@@ -19,8 +19,6 @@ var params = {
 
 /* GET METHOD */
 router.get("/analysis", asyncHandler(async function(req, res, next) {
-    // TODO: handle the request (i.e put the query into the params object)
-    // TODO: need to also sanitise the query (there should be validation on the frontend as well).
     // query sanitization
     if(!req.query) {
         const err = new Error('Required query params missing. You must enter a stock ticker.');
@@ -42,7 +40,6 @@ router.get("/analysis", asyncHandler(async function(req, res, next) {
         params.lang = 'en' // setting default to 10
     }
 
-    // TODO: Need to add sanitization on the ticker query
     // settings params
     params.q = req.query.ticker;
     params.count = req.query.count;
