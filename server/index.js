@@ -18,6 +18,7 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const analysisRouter = require("./routes/analysis");
 const tweetsRouter = require("./routes/tweets");
 const tickerRouter = require("./routes/ticker");
+
 //Init app
 const app = express();
 
@@ -34,7 +35,7 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
-// Serve out any static assets correctly
+// SPA static assets
 app.use(express.static('../client/dist/spa'))
 
 // Middleware
@@ -55,27 +56,21 @@ logger.token("req", (req, res) => {
     return JSON.stringify(headers);
   })
 
-// New api routes should be added here.
-// It's important for them to be before the `app.use()` call below as that will match all routes.
-//routes setup
+// API routes
 app.use("/api", analysisRouter);
 app.use("/api", tweetsRouter)
 app.use("/api", tickerRouter);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-// Any routes that don't match on our static assets or api should be sent to the React Application
-// This allows for the use of things like React Router
+// Routes which arent associated to API will redirect to static assets for SPA
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/spa', 'index.html'));
 })
 
-// middlware to handle errors
-// All Status codes
+// Error handling
 app.use((error, req, res, next) => {
-  // logging to console
   console.log('Error status: ', error.status)
   console.log('Message: ', error.message)
-  // sets HTTP status code
   // default to 500 for fallback
   res.status(error.status || 500)
 
@@ -87,6 +82,7 @@ app.use((error, req, res, next) => {
   })
 })
 
+// Express app
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })

@@ -1,39 +1,20 @@
+# Downloading latest node version
 FROM node:latest
 
-# client files
+# Client files
 COPY ./client /client
 WORKDIR /client
+# Installing client dependicies
 RUN yarn
 RUN yarn global add @quasar/cli
+# Building quasar SPA
 RUN quasar build
+
+# Server files
 COPY ./server /server
 WORKDIR /server
+# Installing server dependicies
 RUN npm i
+# Exposing port and running express application
 EXPOSE 3000
 CMD ["npm", "start"]
-
-
-
-# COPY ./docker/entrypoint.sh /entrypoint/
-
-#     # Changing permissions so that you can access this file
-# RUN ["chmod", "+x", "entrypoint/entrypoint.sh"]
-
-# # server files
-
-# COPY ./docker/entrypoint.sh /entrypoint/
-
-#     # Changing permissions so that you can access this file
-# RUN ["chmod", "+x", "entrypoint/entrypoint.sh"]
-
-# # Copying the current director to a directory named 'src' on the docker image
-# COPY . /src
-
-# # Copy or mount node app here
-# WORKDIR /src/
-
-# EXPOSE 8080
-
-# ENTRYPOINT ["/entrypoint/entrypoint.sh"]
-
-# CMD ["npm", "start"]

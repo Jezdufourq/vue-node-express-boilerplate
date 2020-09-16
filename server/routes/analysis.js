@@ -7,14 +7,13 @@ var router = express.Router();
 var parallelDotsUtil = require('../util/parallelDotsUtil');
 var twitterUtil = require('../util/twitterUtil');
 var tradingViewUtil = require('../util/tradingviewUtil');
-var sanitizationUtil = require('../util/sanitizationUtil');
 
 // default query params
 var params = {
     q: null,
     lang: 'en',
     result_type: 'recent',
-    count: 5
+    count: 10
 }
 
 /**
@@ -84,7 +83,7 @@ router.get("/analysis", asyncHandler(async function(req, res, next) {
     // sanitize/lookup stock ticker
     var tradingViewResp = await tradingViewUtil.searchStockTickers(req.query.ticker).catch((error) => {console.log(error);});
     if (tradingViewResp.length == 0) {
-        const err = new Error('You have entered an invalid stock ticker');
+        const err = new Error('You have entered an invalid stock ticker.');
         err.status = 400;
         next(err);
     }

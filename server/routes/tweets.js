@@ -11,7 +11,7 @@ var params = {
     q: null,
     lang: 'en',
     result_type: 'recent',
-    count: 5
+    count: 10
 }
 
 /**
@@ -74,7 +74,7 @@ router.get("/tweets", asyncHandler(async function(req, res, next) {
     // sanitize/lookup stock ticker
     var tradingViewResp = await tradingViewUtil.searchStockTickers(req.query.ticker).catch((error) => {console.log(error);});
     if (tradingViewResp.length == 0) {
-        const err = new Error('You have entered an invalid stock ticker');
+        const err = new Error('You have entered an invalid stock ticker.');
         err.status = 400;
         next(err);
     }
@@ -84,6 +84,7 @@ router.get("/tweets", asyncHandler(async function(req, res, next) {
     params.count = req.query.count;
     params.result_type = req.query.type;
     params.lang = 'en';
+
     // send the data to the twitter API
     var twitterResp = await twitterUtil.getTweetsText(params).catch((error) => {console.log(error);});
 

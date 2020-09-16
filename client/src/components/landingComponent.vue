@@ -22,18 +22,18 @@
           class="col"
           style="width:500px"
         >
-            <div class="q-pa-md">
-              <div class="row items-center">
-                <q-input
-                  outlined
-                  debounce="500"
-                  class="full-width"
-                  v-model="stockTicker"
-                  label="Search for Stock Ticker"
-                  @input="validateTicker"
-                  clearable
-                >
-                </q-input>
+          <div class="q-pa-md">
+            <div class="row items-center">
+              <q-input
+                outlined
+                debounce="500"
+                class="full-width"
+                v-model="stockTicker"
+                label="Search for Stock Ticker"
+                @input="searchTickerQuery"
+                clearable
+              >
+              </q-input>
             </div>
             <div class="q-py-md">
               <q-table
@@ -44,29 +44,70 @@
                 row-key
                 virtual-scroll
                 :virtual-scroll-item-size="48"
-                @request="validateTicker"
-                @row-click="rowClickTest"
+                @request="searchTickerQuery"
+                @row-click="rowClick"
               />
             </div>
           </div>
         </div>
       </div>
       <div>
-        <history-component />
+        <div style="max-height: 300px;width:500px">
+          <div class="row items-center">
+            <div class="text-h5 q-pa-md text-left text-bold">Your previous searches</div>
+            <div class="col-auto">
+              <q-btn
+                color="primary"
+                text-color="white"
+                label="Reset"
+                @click="resetTickers"
+              />
+            </div>
+          </div>
+          <div
+            v-if="items.length == 0"
+            class="q-pa-md"
+            style="height:200px"
+          >
+            You need to search some items.
+          </div>
+          <div
+            class="list scroll q-pa-md"
+            style="height:200px"
+          >
+            <q-list>
+              <q-item
+                v-for="item in items"
+                :key="item"
+                clickable
+              >
+                <q-item-section class="text-body text-bold">
+                  {{ item }}
+                </q-item-section>
+                <q-item-section side>
+                  <q-icon
+                    name="search"
+                    color="primary"
+                    @click="searchTickerFromHistory(item)"
+                    class="cursor-pointer"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import historyComponent from './historyComponent'
 import loading from './loading'
 import axios from 'axios'
 import notifyError from '../mixins/notifyError'
 export default {
   name: 'landingComponent',
   components: {
-    historyComponent,
     loading
   },
   mixins: [notifyError],
@@ -134,17 +175,22 @@ export default {
       set (payload) {
         this.$store.commit('updateExchangeSymbol', payload)
       }
+    },
+    items: {
+      get () {
+        return this.$store.state.searchHistory
+      },
+      set (payload) {
+        this.$store.commit('updateSearchHistory', payload)
+      }
     }
   },
   methods: {
-    searchTicker () {
+    searchTickerFromHistory (updatedTicker) {
       var promiseArr = []
-      // updating search history
-      this.$store.commit('updateSearchHistory', this.$store.state.stockTicker)
+      this.stockTicker = updatedTicker
       // updating loading state
       this.loadingState = true
-
-      console.log(window.location.origin)
 
       // 1st api call - analysis GET /api/analysis
       promiseArr.push(axios.get('api/analysis?ticker=' + this.stockTicker.toUpperCase()))
@@ -159,12 +205,9 @@ export default {
           analysisObj.positive = Math.round(response[0].data.sentiment.positive * 100)
           analysisObj.neutral = Math.round(response[0].data.sentiment.neutral * 100)
           this.analysisResult = analysisObj
-          console.log(analysisObj)
 
           // dealing with the second response
           this.tweets = response[1].data
-          console.log(response[1].data)
-          console.log(this.tweets)
         })
         .catch((error) => {
           this.notifyError(error)
@@ -174,20 +217,54 @@ export default {
           this.$router.push('/analysis')
         })
     },
+    searchTicker () {
+      var promiseArr = []
+      // updating search history
+      this.$store.commit('updateSearchHistory', this.$store.state.stockTicker)
+      // updating loading state
+      this.loadingState = true
+
+      // 1st api call - analysis GET /api/analysis
+      promiseArr.push(axios.get('api/analysis?ticker=' + this.stockTicker.toUpperCase()))
+      // 2nd api call - tweets GET /api/tweets
+      promiseArr.push(axios.get('api/tweets-detailed?ticker=' + this.stockTicker.toUpperCase()))
+
+      Promise.all(promiseArr)
+        .then((response) => {
+          var analysisObj = {}
+          // dealing with the first response
+          analysisObj.negative = Math.round(response[0].data.sentiment.negative * 100)
+          analysisObj.positive = Math.round(response[0].data.sentiment.positive * 100)
+          analysisObj.neutral = Math.round(response[0].data.sentiment.neutral * 100)
+          this.analysisResult = analysisObj
+
+          // dealing with the second response
+          this.tweets = response[1].data
+        })
+        .catch((error) => {
+          this.notifyError(error)
+        })
+        .finally(() => {
+          this.loadingState = false
+          this.$router.push('/analysis')
+        })
+    },
+    resetTickers () {
+      this.$store.commit('resetSearchHistory')
+    },
     resetTicker () {
       this.stockTicker = null
     },
-    validateTicker (ticker) {
-      axios.get('api/ticker/search-ticker?ticker=' + ticker)
+    searchTickerQuery (ticker) {
+      axios.get('api/search-ticker?ticker=' + ticker)
         .then((response) => {
-          console.log(response.data)
           this.stockTickerSearch = response.data
         })
         .catch((error) => {
           console.log(error)
         })
     },
-    rowClickTest (evt, row) {
+    rowClick (evt, row) {
       this.stockTicker = row.symbol
       this.exchangeSymbol = row.exchange
       // the user can search the ticker on the row click
@@ -196,9 +273,8 @@ export default {
   },
   mounted () {
     // pre-populating table with common tickers
-    axios.get('api/ticker/search-top-tickers')
+    axios.get('api/search-top-tickers')
       .then((response) => {
-        console.log(response.data)
         this.stockTickerSearch = response.data
       })
       .catch((error) => {

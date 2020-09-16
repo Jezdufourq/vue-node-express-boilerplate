@@ -8,18 +8,8 @@ var client = new Twitter({
     bearer_token: process.env.TWITTER_BEARER_TOKEN
 });
 
-/* UTIL METHOD SECTION */
 /* getTweetsText()
 Description - gets the text for each of the tweets. Returns a promise.
-Input -
-Output -
-params - need to be of the form this:
-var params = {
-    q: null,
-    lang: 'en',
-    result_type: 'recent',
-    count: 5
-}
 */
 module.exports = {
     getTweetsText: async function getTweetsText(params) {
@@ -38,9 +28,7 @@ module.exports = {
     },
 
     /* getAnalysis()
-    Description - gets the text for each of the tweets. Returns a promise.
-    Input -
-    Output -
+    Description - gets the detailed information for each of the tweets. Returns a promise.
     */
     getTweetsDetailed: async function getTweetsDetailed(params) {
         return await client.get('search/tweets', params)

@@ -25,7 +25,7 @@ var tradingViewUtil = require('../util/tradingviewUtil');
  *     description: 'A successful response.'
  *
 */
-router.get("/ticker/search-ticker", asyncHandler(async function(req, res, next) {
+router.get("/search-ticker", asyncHandler(async function(req, res, next) {
     var stockTicker = req.query.ticker;
     var tradingViewResp = await tradingViewUtil.searchStockTickers(stockTicker).catch((error) => {console.log(error)});
     res.send(tradingViewResp);
@@ -50,7 +50,7 @@ router.get("/ticker/search-ticker", asyncHandler(async function(req, res, next) 
  *     description: 'A successful response.'
  *
 */
-router.get("/ticker/search-top-tickers", asyncHandler(async function(req, res, next) {
+router.get("/search-top-tickers", asyncHandler(async function(req, res, next) {
     var tradingViewResp = await tradingViewUtil.searchTopStockTickers().catch((error) => {console.log(error)});
     res.send(tradingViewResp);
 }));

@@ -23,7 +23,7 @@
             <q-icon
               name="search"
               color="primary"
-              @click="updateTicker(item)"
+              @click="searchTicker(item)"
               class="cursor-pointer"
             />
           </q-item-section>
@@ -34,10 +34,12 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'tweetsComponent',
   data () {
     return {
+      loadingState: false
     }
   },
   computed: {
@@ -48,14 +50,66 @@ export default {
       set (payload) {
         this.$store.commit('updateSearchHistory', payload)
       }
+    },
+    stockTicker: {
+      get () {
+        return this.$store.state.stockTicker
+      },
+      set (payload) {
+        this.$store.commit('updateStockTicker', payload)
+      }
+    },
+    analysisResult: {
+      get () {
+        return this.$store.state.analysisResult
+      },
+      set (payload) {
+        this.$store.commit('updateAnalysisResult', payload)
+      }
+    },
+    tweets: {
+      get () {
+        return this.$store.state.tweets
+      },
+      set (payload) {
+        this.$store.commit('updateTweets', payload)
+      }
     }
   },
   methods: {
-    updateTicker (ticker) {
-      this.$store.commit('updateStockTicker', ticker)
-    },
     resetTickers () {
       this.$store.commit('resetSearchHistory')
+    },
+    searchTicker (ticker) {
+      this.stockTicker = ticker
+      var promiseArr = []
+      // updating loading state
+      this.loadingState = true
+
+      // 1st api call - analysis GET /api/analysis
+      promiseArr.push(axios.get('api/analysis?ticker=' + this.stockTicker.toUpperCase()))
+      // 2nd api call - tweets GET /api/tweets
+      promiseArr.push(axios.get('api/tweets-detailed?ticker=' + this.stockTicker.toUpperCase()))
+
+      Promise.all(promiseArr)
+        .then((response) => {
+          var analysisObj = {}
+          // dealing with the first response
+          analysisObj.negative = Math.round(response[0].data.sentiment.negative * 100)
+          analysisObj.positive = Math.round(response[0].data.sentiment.positive * 100)
+          analysisObj.neutral = Math.round(response[0].data.sentiment.neutral * 100)
+          this.analysisResult = analysisObj
+
+          // dealing with the second response
+          this.tweets = response[1].data
+        })
+        .catch((error) => {
+          this.notifyError(error)
+        })
+        .finally(() => {
+          this.loadingState = false
+          this.$router.push('/analysis')
+        })
     }
   }
 }
